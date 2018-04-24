@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
 
   @ViewChild("myForm")
 	public myForm: NgForm;
-	public room;
-	public form = {};
+  public form = {};
+  public attemptedTresspassing:boolean;
 
   constructor(
     private messageService: MessageService,
@@ -28,19 +28,18 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin(){
-    let user = this.loginService.isLoggedIn();
+    let user = this.loginService.isLoggedIn(); // returns false if no token found in local storage
     if(user) {
       this.router.navigateByUrl("inbox");
     }
   }
 
   onFormSubmit(form:NgForm){
-    const user = {
+    // object passed into function directly to avoid storing password in local memory
+    this.loginService.login({ 
       username: form.value.username,
       password: form.value.password
-    };
-    let loginRes = this.loginService.login(user); 
-    console.log(loginRes, "login result in com");
+    }); 
   }
 
 }

@@ -1,3 +1,23 @@
-<p>
-  sent works!
-</p>
+<h1 class="ui centered header">Sent</h1>
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Recipient</th>
+      <th>Time Sent</th>
+      <th>Subject</th>
+      <th>Message</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let message of messages">
+      <td>{{message.receiver}}</td>
+      <td>{{message.sent | date}}</td>
+      <td>{{message.title}}</td>
+      <td>{{message.body}}</td>
+      <td>
+        <button class="negative ui button" (click)="delete(message.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

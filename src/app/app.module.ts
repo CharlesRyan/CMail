@@ -16,6 +16,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import {LoginGuard} from './login-guard.service';
 import {LoginService} from './login.service';
 import {MessageService} from './message.service';
+import { DatePipe } from './date.pipe';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {MessageService} from './message.service';
     InboxComponent,
     SentComponent,
     ComposeComponent,
-    NavigationComponent
+    NavigationComponent,
+    DatePipe
   ],
   imports: [
     BrowserModule,

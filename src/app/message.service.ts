@@ -10,35 +10,49 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class MessageService {
 
-	messagesUrl = "https://iostest.bixly.com/messages/";
+  messagesUrl = "https://iostest.bixly.com/messages/";
 
   constructor(
     private http: HttpClient
   ) { }
 
-deleteById(id){
-  let url  = this.messagesUrl + id;
-  console.log(url);
-  let token = localStorage.getItem('token');
-		let httpOptions = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-				'Authorization': 'Token ' + token
-			})
-		}
-		return this.http.delete(url, httpOptions);
-}
+  getHttpOptions() {
+    let token = localStorage.getItem('token');
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + token
+      })
+    }
+    return httpOptions;
+  }
 
-// getAllMessages() {
-	getAllMessages() {
-		let token = localStorage.getItem('token');
-		let httpOptions = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-				'Authorization': 'Token ' + token
-			})
-		}
-		return this.http.get(this.messagesUrl, httpOptions);
-	}
+  postMessage(data) {
+    let httpOptions = this.getHttpOptions();
+    return this.http.post(
+      this.messagesUrl,
+      data,
+      httpOptions
+    )
+  }
+
+  deleteById(id) {
+    let httpOptions = this.getHttpOptions();
+    let url = this.messagesUrl + id;
+    return this.http.delete(url, httpOptions);
+  }
+
+  getAllMessages(inboxOrSent) {
+    let url;
+    inboxOrSent === "inbox" ? url = this.messagesUrl : url = this.messagesUrl + "sent/"
+    let token = localStorage.getItem('token');
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + token
+      })
+    }
+    return this.http.get(url, httpOptions);
+  }
 
 }

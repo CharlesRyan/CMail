@@ -11,6 +11,7 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class LoginService {
 
+  username;
   token;
   tokenAuthUrl = "https://iostest.bixly.com/api-token-auth/";
   httpOptions = {
@@ -26,12 +27,13 @@ export class LoginService {
     private router: Router
   ) { }
 
-  isLoggedIn() {
-    localStorage.getItem('token') === "0" ? this._loggedInUser = false : this._loggedInUser = true;
-    console.log(localStorage.getItem('token'), "login check");
-    
-    console.log(this._loggedInUser, "login check");
+  getUser() {
+    return this.username;
+  }
 
+  isLoggedIn() {
+    // check local storage every time 
+    localStorage.getItem('token') === "0" ? this._loggedInUser = false : this._loggedInUser = true;
     return this._loggedInUser;
   }
 
@@ -40,18 +42,21 @@ export class LoginService {
   }
 
   login(user) {
+    this.username = user.username;
     if (!this.isLoggedIn()) {
       return this.http.post(this.tokenAuthUrl, user, this.httpOptions)
         .subscribe(data => {
           this.token = data;
           this.token = this.token.token.toString();
-          if (this.token) {
-            // this._loggedInUser = true;
+          if (this.token) { // successful login
             localStorage.setItem('token', this.token);
             this.router.navigateByUrl("inbox");
           }
         },
-          err => alert('Login Failed- username and/or password invalid'));
+          err => {
+            alert('Login Failed- username and/or password invalid')
+            console.log(err);
+          });
     }
   }
 }

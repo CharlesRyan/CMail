@@ -1,12 +1,12 @@
-<div class="ui grid container">
+<div class="ui grid container centered">
   <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
       <div class="field">
           <label for="username">Username</label>
-          <input name="username" type="text" [ngModel]="form.username">
+          <input name="username" type="text" placeholder="test" [ngModel]="form.username">
       </div>
       <div class="field">
           <label for="password">Password</label>
-          <input name="password" type="password" [ngModel]="form.password">
+          <input name="password" type="password" placeholder="test123!" [ngModel]="form.password">
       </div>
       <button type="submit" class="ui submit button">Submit</button>
   </form>

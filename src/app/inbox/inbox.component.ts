@@ -8,32 +8,38 @@ import { MessageService } from "../message.service"
 })
 export class InboxComponent implements OnInit {
 
-  public messages;
+  public messages = [];
 
   constructor(
     private messageService: MessageService
   ) { }
 
   ngOnInit() {
-    this.messageService.getAllMessages()
+    this.getInboxMessages();
+  }
+
+  getInboxMessages() {
+    this.messageService.getAllMessages("inbox")
       .subscribe(
         data => {
-          console.log(data);
-          
-          this.messages = data;
-        }
+          for (let item in data) {
+            this.messages.push(data[item]);
+          }
+          this.messages = this.messages.slice().reverse();
+        },
+        err => console.log(err)
       );
   }
 
-  delete(id){
+  delete(id) {
     this.messageService.deleteById(id)
-    .subscribe(
-      data => {
-        console.log(data);
-      },
-      err => console.log(err)
-    );
+      .subscribe(
+        data => { // success, clear local messages and make another request
+          this.messages = [];
+          this.getInboxMessages();
+        },
+        err => console.log(err)
+      );
   }
   
-
 }
