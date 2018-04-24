@@ -1,0 +1,17 @@
+<h1 class="ui centered header">Inbox</h1>
+<table class="ui celled table">
+  <thead>
+    <tr><th>Sender</th>
+    <th>Time Sent</th>
+    <th>Message</th>
+    <th></th>
+  </tr></thead>
+  <tbody>
+    <tr *ngFor="let message of messages">
+      <td>{{message.sender}}</td>
+      <td>{{message.sent}}</td>
+      <td>{{message.body}}</td>
+      <td><button class="negative ui button" (click)="delete(message.id)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
