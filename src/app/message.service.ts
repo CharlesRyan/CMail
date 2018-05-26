@@ -4,6 +4,7 @@ import { HttpHeaders, HttpClient, HttpParams } from "@angular/common/http";
 
 import { ApplicationSettingsService } from "./application-settings.service";
 
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/do";
@@ -15,50 +16,39 @@ export class MessageService {
 
   constructor(
     private http: HttpClient,
-    private applicationSettingService: ApplicationSettingsService
+    private applicationSettings: ApplicationSettingsService,
+    private db: AngularFireDatabaseModule
   ) { }
 
   getRestUrl(suffix:string) {
-    return this.applicationSettingService.getFirebaseRestUrl(suffix);
-  }
-
-  getHttpOptions() {
-    let token = localStorage.getItem('token');
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + token
-      })
-    }
-    return httpOptions;
+    return this.applicationSettings.getFirebaseRestUrl(suffix);
   }
 
   postMessage(data) {
-    let httpOptions = this.getHttpOptions();
     return this.http.post(
-      this.getRestUrl(''),
-      data,
-      httpOptions
+      this.getRestUrl('sent'),
+      data
     )
   }
 
   deleteById(id) {
-    let httpOptions = this.getHttpOptions();
     let url = this.getRestUrl(id);
-    return this.http.delete(url, httpOptions);
+    return this.http.delete(url);
   }
 
-  getAllMessages(inboxOrSent) {
-    let url;
-    inboxOrSent === "inbox" ? url = this.getRestUrl("") : url = this.getRestUrl("sent/");
-    let token = localStorage.getItem('token');
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + token
-      })
-    }
-    return this.http.get(url, httpOptions);
+  getAllMessages(suffix) {    
+    return this.http.get(this.getRestUrl(suffix))
+			// .map(response => response.json())
+			.map(response => {
+				const rooms = [];
+				for (let roomKey in response) {
+					// affix the Firebase key to ID property
+					response[roomKey].id = roomKey;
+					// add to our array
+					rooms.push(response[roomKey]);
+				}
+				return rooms;
+			});
   }
 
 }

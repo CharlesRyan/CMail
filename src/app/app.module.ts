@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from "@angular/forms";
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
+import { AngularFireAuthModule } from "angularfire2/auth";
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -18,7 +20,9 @@ import { NavigationComponent } from './navigation/navigation.component';
 import {LoginGuard} from './login-guard.service';
 import {LoginService} from './login.service';
 import {MessageService} from './message.service';
+import { ApplicationSettingsService } from './application-settings.service';
 import { DatePipe } from './date.pipe';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -29,7 +33,8 @@ import { DatePipe } from './date.pipe';
     SentComponent,
     ComposeComponent,
     NavigationComponent,
-    DatePipe
+    DatePipe,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -37,12 +42,15 @@ import { DatePipe } from './date.pipe';
     HttpModule,
     HttpClientModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [
     LoginGuard,
     LoginService,
-    MessageService
+    MessageService,
+    ApplicationSettingsService
   ],
   bootstrap: [AppComponent]
 })

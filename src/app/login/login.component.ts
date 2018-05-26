@@ -28,18 +28,20 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin(){
-    let user = this.loginService.isLoggedIn(); // returns false if no token found in local storage
+    let user = this.loginService.getLoggedInUser(); // returns false if no token found in local storage
     if(user) {
       this.router.navigateByUrl("inbox");
     }
   }
 
   onFormSubmit(form:NgForm){
+    this.loginService.login();
+
     // object passed into function directly to avoid storing password in local memory
-    this.loginService.login({ 
-      username: form.value.username,
-      password: form.value.password
-    }); 
+    // this.loginService.login({ 
+    //   username: form.value.username,
+    //   password: form.value.password
+    // }); 
   }
 
 }

@@ -22,6 +22,7 @@ export class InboxComponent implements OnInit {
     this.messageService.getAllMessages("inbox")
       .subscribe(
         data => {
+          console.log(data)
           for (let item in data) {
             this.messages.push(data[item]);
           }

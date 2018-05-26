@@ -1,0 +1,4 @@
+message-app todo
+
+firebase format: {user{inbox}{sent}}
+
