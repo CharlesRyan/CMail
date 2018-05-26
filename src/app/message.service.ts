@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { HttpHeaders, HttpClient, HttpParams } from "@angular/common/http";
 
+import { ApplicationSettingsService } from "./application-settings.service";
+
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/do";
@@ -10,11 +12,15 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class MessageService {
 
-  messagesUrl = "https://iostest.bixly.com/messages/";
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private applicationSettingService: ApplicationSettingsService
   ) { }
+
+  getRestUrl(suffix:string) {
+    return this.applicationSettingService.getFirebaseRestUrl(suffix);
+  }
 
   getHttpOptions() {
     let token = localStorage.getItem('token');
@@ -30,7 +36,7 @@ export class MessageService {
   postMessage(data) {
     let httpOptions = this.getHttpOptions();
     return this.http.post(
-      this.messagesUrl,
+      this.getRestUrl(''),
       data,
       httpOptions
     )
@@ -38,13 +44,13 @@ export class MessageService {
 
   deleteById(id) {
     let httpOptions = this.getHttpOptions();
-    let url = this.messagesUrl + id;
+    let url = this.getRestUrl(id);
     return this.http.delete(url, httpOptions);
   }
 
   getAllMessages(inboxOrSent) {
     let url;
-    inboxOrSent === "inbox" ? url = this.messagesUrl : url = this.messagesUrl + "sent/"
+    inboxOrSent === "inbox" ? url = this.getRestUrl("") : url = this.getRestUrl("sent/");
     let token = localStorage.getItem('token');
     let httpOptions = {
       headers: new HttpHeaders({
