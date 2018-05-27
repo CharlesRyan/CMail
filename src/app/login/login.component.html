@@ -1,16 +1,27 @@
 <div class="ui grid container centered">
+  <h1>Login</h1>
   <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
-      <div class="field">
-          <label for="username">Username</label>
-          <input name="username" type="text" placeholder="test" [ngModel]="form.username">
+    <div class="field">
+      <label for="username">Username</label>
+      <input name="username" type="text" placeholder="Username" [ngModel]="form.username" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" required>
+    </div>
+
+    <div class="ui negative message" *ngIf='failedSignIn'>
+      <div class="header">
+        Sign In Failed
       </div>
-      <div class="field">
-          <label for="password">Password</label>
-          <input name="password" type="password" placeholder="test123!" [ngModel]="form.password">
-      </div>
-      <button type="submit" class="ui submit button">Submit</button>
+      <p class="ui">Username/Password Incorrect</p>
+      
+    </div>
+    <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Submit</button>
   </form>
   <div>
-      <p>New user? Want another account to converse with yourself? <a routerLink="register">Register Here</a></p>
+    <p>New user? Want another account to converse with yourself?
+      <a routerLink="../register" routerLinkActive="active">Register Here</a>
+    </p>
   </div>
 </div>

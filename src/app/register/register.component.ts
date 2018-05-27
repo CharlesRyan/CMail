@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, Input, SimpleChange, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgForm } from "@angular/forms";
+
+import { MessageService } from "../message.service";
+import { LoginService } from "../login.service";
 
 @Component({
   selector: 'app-register',
@@ -7,9 +12,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild("myForm")
+  public myForm: NgForm;
+  public form = {};
+  public unExists:boolean = false;
+
+  constructor(
+    private messageService: MessageService,
+    private loginService: LoginService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
+
+  onFormSubmit(form: NgForm) {
+    this.loginService.checkForUsername(form.value.username).subscribe(response => {
+      if (response) {
+        // hash password here
+        this.loginService.createUser(form.value.username, form.value.password);
+        this.messageService.postWelcomeMessage(form.value.username);
+        this.router.navigateByUrl("login");
+      } else {
+        form.reset();
+        this.unExists = true;
+      }
+    });
+  }
 
   ngOnInit() {
+    this.loginService.checkForUsername('blatnye');
   }
 
 }

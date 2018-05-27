@@ -4,7 +4,7 @@ import { HttpHeaders, HttpClient, HttpParams } from "@angular/common/http";
 
 import { ApplicationSettingsService } from "./application-settings.service";
 
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/do";
@@ -17,7 +17,7 @@ export class MessageService {
   constructor(
     private http: HttpClient,
     private applicationSettings: ApplicationSettingsService,
-    private db: AngularFireDatabaseModule
+    private db: AngularFireDatabase
   ) { }
 
   getRestUrl(suffix:string) {
@@ -29,6 +29,22 @@ export class MessageService {
       this.getRestUrl('sent'),
       data
     )
+  }
+
+  postWelcomeMessage(un) {
+    let data = {
+      'inbox': {
+        'index': 0,
+        'sender': 'CCR',
+        'title': 'Welcome',
+        'body': 'Welcome, new user, to my messaging app'
+      },
+      'sent': {}
+    };
+    let messageRef = this.db.object(`messages/${un}`);
+    messageRef.set(data)
+      .then(_ => console.log('message success'))
+      .catch(err => console.log(err, 'Error with message setup'));
   }
 
   deleteById(id) {

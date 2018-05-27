@@ -1,13 +1,22 @@
 <div class="ui grid container centered">
+  <h1>Register</h1>
   <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
-      <div class="field">
-          <label for="username">Username</label>
-          <input name="username" type="text" placeholder="test" [ngModel]="form.username">
+    <div class="field">
+      <label for="username">Username</label>
+      <input name="username" type="text" placeholder="Username" [ngModel]="form.username" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" required>
+    </div>
+
+    <div class="ui negative message" *ngIf='unExists'>
+      <div class="header">
+        Username Exists
       </div>
-      <div class="field">
-          <label for="password">Password</label>
-          <input name="password" type="password" placeholder="test123!" [ngModel]="form.password">
-      </div>
-      <button type="submit" class="ui submit button">Create</button>
+      <p class="ui">Be More Unique</p>
+    </div>
+
+    <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Create</button>
   </form>
 </div>
