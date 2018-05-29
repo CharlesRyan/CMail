@@ -15,6 +15,10 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
   }
 
+  toggleDirectory() {
+    this.loginService.getAllUsers().subscribe()
+  }
+
   logout() {
     this.loginService.logout();
   }

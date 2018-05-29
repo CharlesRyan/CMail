@@ -9,6 +9,7 @@ import { MessageService } from "../message.service"
 export class SentComponent implements OnInit {
 
   public messages = [];
+  public user:string;
 
   constructor(
     private messageService: MessageService
@@ -19,23 +20,21 @@ export class SentComponent implements OnInit {
   }
 
   getSentMessages() {
-    this.messageService.getAllMessages("sent")
+    this.user = localStorage.getItem('user');
+    this.messageService.getAllMessages(`messages/${this.user}/sent`)
       .subscribe(
         data => {
-          for (let item in data) {
-            this.messages.push(data[item]);
-          }
-          this.messages = this.messages.slice().reverse();
-        },
+            this.messages = data.slice().reverse(); // keep the most recent in front
+          },
         err => console.log(err)
       );
   }
 
   delete(id) {
-    this.messageService.deleteById(id)
+    this.messageService.deleteById(`messages/${this.user}/sent/${id}`)
       .subscribe(
         data => { // success, clear local messages and make another request
-          this.messages = [];
+          // this.messages = [];
           this.getSentMessages();
         },
         err => console.log(err)

@@ -1,18 +1,37 @@
 <h1 class="ui centered header">Compose</h1>
 <div class="ui container">
-<form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
-  <div class="field">
-    <label>Recipient</label>
-    <input type="text" name="receiver" placeholder="tomk or test" [ngModel]="form.receiver" required>
-  </div>
-  <div class="field">
-    <label>Subject</label>
-    <input type="text" name="title" [ngModel]="form.title" required>
-  </div>
-  <div class="field">
-    <label>Message</label>
-    <textarea type="text" name="body" [ngModel]="form.body" required></textarea>
-  </div>
-  <button class="ui button" type="submit" [disabled]="!myForm.valid">Submit</button>
-</form>
+  <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
+    <div class="field">
+      <span class='userDir'>
+        <label>Recipient</label>
+        <div class="ui simple dropdown">
+          <div class="text">
+            User Directory
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item" *ngFor="let user of users" (click)='fillInUser($event)'>
+              {{user}}
+            </div>
+          </div>
+        </div>
+      </span>
+      <input type="text" name="receiver" placeholder="" [value]="dirUser" [ngModel]="form.receiver" required>
+      <div class="ui negative message" *ngIf='!unExists'>
+        <div class="header">
+          Username Does not Exist
+        </div>
+        <p class="ui">Need help? Check the User Directory</p>
+      </div>
+    </div>
+    <div class="field">
+      <label>Subject</label>
+      <input type="text" name="title" [ngModel]="form.title" required>
+    </div>
+    <div class="field">
+      <label>Message</label>
+      <textarea type="text" name="body" [ngModel]="form.body" required></textarea>
+    </div>
+    <button class="ui button" type="submit" [disabled]="!myForm.valid">Submit</button>
+  </form>
 </div>

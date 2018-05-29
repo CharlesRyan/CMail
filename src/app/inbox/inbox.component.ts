@@ -9,6 +9,7 @@ import { MessageService } from "../message.service"
 export class InboxComponent implements OnInit {
 
   public messages = [];
+  public user:string;
 
   constructor(
     private messageService: MessageService
@@ -19,28 +20,25 @@ export class InboxComponent implements OnInit {
   }
 
   getInboxMessages() {
-    this.messageService.getAllMessages("inbox")
+    this.user = localStorage.getItem('user');
+    this.messageService.getAllMessages(`messages/${this.user}/inbox`)
       .subscribe(
         data => {
-          console.log(data)
-          for (let item in data) {
-            this.messages.push(data[item]);
-          }
-          this.messages = this.messages.slice().reverse();
+          this.messages = data.slice().reverse(); // keep the most recent in front
         },
         err => console.log(err)
       );
   }
 
   delete(id) {
-    this.messageService.deleteById(id)
+    this.messageService.deleteById(`messages/${this.user}/inbox/${id}`)
       .subscribe(
         data => { // success, clear local messages and make another request
-          this.messages = [];
+          // this.messages = [];
           this.getInboxMessages();
         },
         err => console.log(err)
       );
   }
-  
+
 }

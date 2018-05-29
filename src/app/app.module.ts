@@ -23,6 +23,7 @@ import {MessageService} from './message.service';
 import { ApplicationSettingsService } from './application-settings.service';
 import { DatePipe } from './date.pipe';
 import { RegisterComponent } from './register/register.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { RegisterComponent } from './register/register.component';
     ComposeComponent,
     NavigationComponent,
     DatePipe,
-    RegisterComponent
+    RegisterComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

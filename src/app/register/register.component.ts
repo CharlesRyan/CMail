@@ -26,20 +26,19 @@ export class RegisterComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.loginService.checkForUsername(form.value.username).subscribe(response => {
-      if (response) {
+      if (response) { // returns true if username exists
+        form.reset();
+        this.unExists = true;
+      } else {
         // hash password here
         this.loginService.createUser(form.value.username, form.value.password);
         this.messageService.postWelcomeMessage(form.value.username);
         this.router.navigateByUrl("login");
-      } else {
-        form.reset();
-        this.unExists = true;
       }
     });
   }
 
   ngOnInit() {
-    this.loginService.checkForUsername('blatnye');
   }
 
 }

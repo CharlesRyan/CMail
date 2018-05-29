@@ -48,10 +48,10 @@ export class LoginService {
       .map(users => {
         for (let user in users) {
           if (user === un) {
-            return false;
+            return true;
           }
         }
-        return true;
+        return false;
       });
     return userList;
   }

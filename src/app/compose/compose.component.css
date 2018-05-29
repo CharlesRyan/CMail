@@ -1,0 +1,8 @@
+.userDir {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    margin: 0 0 .28571429rem 0;
+    color: rgba(0,0,0,.87);
+    font-size: .92857143em;
+}

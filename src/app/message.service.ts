@@ -20,51 +20,63 @@ export class MessageService {
     private db: AngularFireDatabase
   ) { }
 
-  getRestUrl(suffix:string) {
+  getRestUrl(suffix: string) {
     return this.applicationSettings.getFirebaseRestUrl(suffix);
   }
 
   postMessage(data) {
-    return this.http.post(
-      this.getRestUrl('sent'),
-      data
-    )
+    let obj = JSON.parse(data); // make data digestible for Firebase
+
+    this.db.list(`messages/${obj.receiver}/inbox`).push(obj); // send to recipient
+    this.db.list(`messages/${obj.sender}/sent`).push(obj);    // add to sent box of sender
   }
 
   postWelcomeMessage(un) {
+    let date = new Date();
     let data = {
-      'inbox': {
-        'index': 0,
-        'sender': 'CCR',
-        'title': 'Welcome',
-        'body': 'Welcome, new user, to my messaging app'
+      inbox: {
+        0: {
+          sender: 'CCR',
+          receiver: un,
+          sent: date.toString(),
+          title: 'Welcome',
+          body: `Welcome, ${un}, to my messaging app`
+        }
       },
-      'sent': {}
+      sent: {
+        0: {
+          sender: 'CCR',
+          receiver: un,
+          sent: date.toString(),
+          title: 'Welcome',
+          body: `Welcome, ${un}, to my messaging app`
+        }
+      }
     };
     let messageRef = this.db.object(`messages/${un}`);
     messageRef.set(data)
-      .then(_ => console.log('message success'))
-      .catch(err => console.log(err, 'Error with message setup'));
+      .then(_ => null)
+      .catch(err => console.log(err, 'Error with welcome message'));
   }
 
-  deleteById(id) {
-    let url = this.getRestUrl(id);
+  deleteById(suffix) {
+    let url = this.getRestUrl(suffix);
     return this.http.delete(url);
   }
 
-  getAllMessages(suffix) {    
+  getAllMessages(suffix) { // returns array of message objects
     return this.http.get(this.getRestUrl(suffix))
-			// .map(response => response.json())
-			.map(response => {
-				const rooms = [];
-				for (let roomKey in response) {
+      .map(response => {
+        // let messages:IMessage[] = [];             // todo- create message interface
+        let messages = [];
+				for (let message in response) {
 					// affix the Firebase key to ID property
-					response[roomKey].id = roomKey;
+					response[message].id = message;
 					// add to our array
-					rooms.push(response[roomKey]);
+					messages.push(response[message]);
 				}
-				return rooms;
-			});
+        return messages;
+      });
   }
 
 }

@@ -15,6 +15,9 @@ export class ComposeComponent implements OnInit {
   @ViewChild("myForm")
   public myForm: NgForm;
   public form = {};
+  public unExists: boolean = true;
+  public users = [];
+  public dirUser;
 
   constructor(
     private loginService: LoginService,
@@ -23,24 +26,38 @@ export class ComposeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loginService.getAllUsers() // populate user directory
+      .subscribe(users => {
+        for (let user in users) {
+          this.users.push(user);
+        }
+      });
   }
 
   onFormSubmit(form: NgForm) {
+    let date = new Date();
     let message = { // pull values from the form
       title: form.value.title,
+      sent: date,
+      sender: localStorage.getItem('user'),
       body: form.value.body,
       receiver: form.value.receiver
     };
     let data = JSON.stringify(message); // object => JSON
 
-    this.messageService.postMessage(data).subscribe(
-      data => {
+    // send if receiver exists in db
+    this.loginService.checkForUsername(form.value.receiver).subscribe(response => {
+      if (response) { // returns true if username exists
+        this.messageService.postMessage(data);
         this.router.navigateByUrl("sent");
-      },
-      err => {
-        alert("Message failed. Please check if the receiver field is valid.");
-        console.log(err);
+      } else {
+        this.unExists = false;
       }
-    );
+    });
+  }
+
+  fillInUser(event){
+    this.dirUser = event.target.innerText;
+    
   }
 }
