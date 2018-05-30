@@ -31,7 +31,7 @@ export class SentComponent implements OnInit {
   }
 
   delete(id) {
-    this.messageService.deleteById(`messages/${this.user}/sent/${id}`)
+    this.messageService.deleteMessageById(`messages/${this.user}/sent/${id}`)
       .subscribe(
         data => { // success, clear local messages and make another request
           // this.messages = [];

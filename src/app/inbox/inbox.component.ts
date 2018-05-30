@@ -24,17 +24,17 @@ export class InboxComponent implements OnInit {
     this.messageService.getAllMessages(`messages/${this.user}/inbox`)
       .subscribe(
         data => {
-          this.messages = data.slice().reverse(); // keep the most recent in front
+          this.messages = data.slice().reverse(); // keep the most recent on top
         },
         err => console.log(err)
       );
   }
 
   delete(id) {
-    this.messageService.deleteById(`messages/${this.user}/inbox/${id}`)
+    this.messageService.deleteMessageById(`messages/${this.user}/inbox/${id}`)
       .subscribe(
-        data => { // success, clear local messages and make another request
-          // this.messages = [];
+        data => { 
+          // success, update local messages
           this.getInboxMessages();
         },
         err => console.log(err)

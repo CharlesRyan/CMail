@@ -6,6 +6,7 @@ import { SentComponent } from "./sent/sent.component";
 import { LoginComponent } from "./login/login.component";
 import { ComposeComponent } from "./compose/compose.component";
 import { RegisterComponent } from "./register/register.component";
+import { SettingsComponent } from "./settings/settings.component";
 import { LoginGuard } from "./login-guard.service";
 
 const routes: Routes = [    {
@@ -21,6 +22,11 @@ const routes: Routes = [    {
 {
   path: "register",
   component: RegisterComponent
+},
+{
+  path: "settings",
+  component: SettingsComponent,
+  canActivate: [LoginGuard]
 },
 {
   path: "inbox",

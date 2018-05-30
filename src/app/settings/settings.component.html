@@ -1,3 +1,69 @@
-<p>
-  settings works!
-</p>
+<div>
+  <h1>Account Settings for
+    <span [innerHTML]="user"></span>
+  </h1>
+  <button class="ui button" (click)="openMenu('pp')">Privacy Policy</button>
+  <button class="ui button" (click)="openMenu('cp')">Change Password</button>
+  <button class="negative ui button" (click)="openMenu('du')">Delete Account</button>
+    <!-- Change Password -->
+  <div class="ui message" *ngIf='changingPassword'>
+    <div class="header">
+      Enter current password and desired new password
+    </div>
+    <br>
+    <form class="ui form" (ngSubmit)="checkPassword(cpForm, this.changePassword)" #cpForm="ngForm">
+      <div class="field">
+        <label>Current Password</label>
+        <input type="password" name="password" [ngModel]="form.password" required>
+        <div class="ui negative message" *ngIf='badPassword'>
+          <div class="header">
+            Password incorrect
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" name="newPassword1" [ngModel]="form.newPassword1" required>
+      </div>
+      <div class="field">
+        <label>Retype New Password</label>
+        <input type="password" name="newPassword2" [ngModel]="form.newPassword2" required>
+      </div>
+      <button class="ui positive button" type="submit" [disabled]="!cpForm.valid">Submit</button>
+      <button class="ui button" type="submit" (click)="this.deletingUser = false">Cancel</button>
+    </form>
+  </div>
+  <!-- Delete user -->
+  <div class="ui negative message" *ngIf='deletingUser'>
+    <div class="header">
+      Are you sure?
+    </div>
+    <br>
+    <form class="ui form" (ngSubmit)="checkPassword(duForm, deleteUser)" #duForm="ngForm">
+      <div class="field">
+        <label>Enter password to confirm</label>
+        <input type="password" name="password" [ngModel]="form.password" required>
+        <div class="ui negative message" *ngIf='badPassword'>
+          <div class="header">
+            Password incorrect
+          </div>
+        </div>
+      </div>
+      <button class="ui negative button" type="submit" [disabled]="!duForm.valid">Delete</button>
+      <button class="ui button" type="submit" (click)="this.deletingUser = false">Cancel</button>
+    </form>
+  </div>
+</div>
+<!-- Privacy policy -->
+<div class="ui message" *ngIf='privacy'>
+  <div class="header">
+    Don't worry about it.
+  </div>
+</div>
+<!-- Success message -->
+<div class="ui positive message" *ngIf='success'>
+  <i class="close icon"></i>
+  <div class="header">
+    Success!
+  </div>
+</div>

@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin() {
-    let user = this.loginService.getLoggedInUser(); // returns false if no user found in local storage
-    if (user) {
+    let valid = this.loginService.getLoggedInUser(); // returns false if no user found in local storage
+    if (valid) { // skip login screen if already logged in
       this.router.navigateByUrl("inbox");
     }
   }

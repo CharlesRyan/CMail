@@ -56,8 +56,8 @@ export class ComposeComponent implements OnInit {
     });
   }
 
-  fillInUser(event){
-    this.dirUser = event.target.innerText;
-    
+  fillInUser(event){ // populates receiver field with username clicked in directory
+    this.dirUser = event.target.innerText;    
   }
+
 }

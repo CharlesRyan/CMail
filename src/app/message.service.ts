@@ -59,9 +59,14 @@ export class MessageService {
       .catch(err => console.log(err, 'Error with welcome message'));
   }
 
-  deleteById(suffix) {
+  deleteMessageById(suffix) {
     let url = this.getRestUrl(suffix);
     return this.http.delete(url);
+  }
+
+  deleteUser(user) {
+    const itemsRef = this.db.list('messages');
+    itemsRef.remove(user);
   }
 
   getAllMessages(suffix) { // returns array of message objects

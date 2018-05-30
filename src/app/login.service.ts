@@ -62,6 +62,11 @@ export class LoginService {
     passRef.update(un, { 'pw': pw });
   }
 
+  deleteUser(user) {
+    const itemsRef = this.db.list('users');
+    itemsRef.remove(user);
+  }
+
   logout() {
     this._loggedInUser = false;
     localStorage.removeItem('user');

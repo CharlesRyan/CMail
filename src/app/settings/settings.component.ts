@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, Input, SimpleChange, ViewChild } from '@angular/core';
+import { NgForm } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+
+import { LoginService } from "../login.service";
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +12,95 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild("cuForm")
+  public cuForm: NgForm;
+
+  @ViewChild("cpForm")
+  public cpForm: NgForm;
+
+  @ViewChild("duForm")
+  public duForm: NgForm;
+
+  public form = {};
+
+  public user: string;
+  public menuOpen: boolean = false;
+  public currentMenu: string;
+  public privacy: boolean = false;
+  public success: boolean = false;
+  public deletingUser: boolean = false;
+  public changingPassword: boolean = false;
+  public badPassword: boolean = false;
+
+  constructor(
+    private loginService: LoginService,
+    private messageService: MessageService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.user = localStorage.getItem('user');
+  }
+
+  openMenu(action) {
+    if (this.menuOpen === true && this.currentMenu === action) {
+      this.closeMenu();
+      return; // don't open menu if same button pressed twice
+    } else if (this.menuOpen === true) {
+      this.closeMenu();
+    }
+
+    this.currentMenu = action; // remember whats open to enable toggling
+
+    if (action === 'cp') {
+      this.changingPassword = true;
+      this.menuOpen = true;
+    } else if (action === 'du') {
+      this.deletingUser = true;
+      this.menuOpen = true;
+    } else if (action === 'pp') {
+      this.privacy = true;
+      this.menuOpen = true;
+    } else if (action === 'su') {
+      this.success = true;
+      this.menuOpen = true;
+    }
+  }
+
+  closeMenu() {
+    this.privacy = false;
+    this.success = false;
+    this.deletingUser = false;
+    this.changingPassword = false;
+    this.currentMenu = '';
+    this.menuOpen = false;
+    this.badPassword = false;
+  }
+
+  checkPassword(form: NgForm, cb) { // calls cb if password matches
+    this.loginService.login(this.user, form.value.password).subscribe(response => {
+      if (response) {
+        cb.call(this, form);
+      } else {
+        this.badPassword = true;
+      }
+    });
+  }
+
+  changePassword(form: NgForm) {
+    if (form.value.newPassword1 === form.value.newPassword2) {
+      this.loginService.createUser(this.user, form.value.newPassword1);
+      this.openMenu('su');
+    } else {
+      // error passwords must match
+    }
+  }
+
+  deleteUser(form: NgForm) {
+    this.loginService.deleteUser(this.user); // user data
+    this.messageService.deleteUser(this.user); // messages
+    this.loginService.logout();
+    this.router.navigateByUrl("login");
   }
 
 }
