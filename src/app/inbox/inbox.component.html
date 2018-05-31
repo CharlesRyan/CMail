@@ -15,7 +15,7 @@
       <td>{{message.sent | date}}</td>
       <td>{{message.subject}}</td>
       <td>{{message.message}}</td>
-      <td>
+      <td class='center aligned'>
         <i class="reply icon" (click)="reply(message.sender, message.subject)"></i>
         <i class="trash icon" (click)="delete(message.id)"></i>
       </td>

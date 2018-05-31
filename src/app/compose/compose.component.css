@@ -8,4 +8,5 @@
 }
 .container{
     margin-top: 1rem !important;
+    max-width: 60rem !important;
 }

@@ -4,9 +4,9 @@
 .menu {
     position: relative !important;
 }
-p{
+p {
     position: absolute !important;
-    right: 0 !important;
+    right: 0px !important;
     border: none !important;
     font-weight: 700 !important;
 }
