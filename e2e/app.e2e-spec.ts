@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('bixly-test-cr App', () => {
+describe('CMail App', () => {
   let page: AppPage;
 
   beforeEach(() => {

@@ -21,7 +21,7 @@ export class InboxComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getInboxMessages();
+    this.getInboxMessages();    
   }
 
   getInboxMessages(): void {

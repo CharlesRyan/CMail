@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LoginService } from "../login.service";
 
 @Component({
@@ -8,16 +8,20 @@ import { LoginService } from "../login.service";
 })
 export class NavigationComponent implements OnInit {
 
-  public user;
+  @Input()
+  user: string;
 
   constructor(
     private loginService: LoginService
   ) { }
 
   ngOnInit() {
-    let check = this.loginService.getUsername();
-    this.user = check === false ? 'Please Log In' : `Hello, ${check}`;
   }
+
+  // greet() {
+  //   let check = this.loginService.getUsername();
+  //   this.user = check === false ? 'Please Log In' : `Hello, ${check}`;
+  // }
 
   logout() {
     this.loginService.logout();
