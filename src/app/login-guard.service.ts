@@ -11,9 +11,7 @@ export class LoginGuard implements CanActivate {
     ) { }
 
     canActivate() {
-        if (this.loginService.getLoggedInUser()) return true;
-        
-        return false;
+        return this.loginService.getUsername() ? true : false;
     }
 }
 

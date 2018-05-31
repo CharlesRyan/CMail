@@ -10,7 +10,7 @@ import { LoginService } from "../login.service";
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   @ViewChild("myForm")
   public myForm: NgForm;
@@ -26,19 +26,22 @@ export class RegisterComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.loginService.checkForUsername(form.value.username).subscribe(response => {
-      if (response) { // returns true if username exists
+      if (response) { // true if username exists
         form.reset();
-        this.unExists = true;
+        this.unExists = true; // prompts to choose different username
       } else {
         // hash password here
         this.loginService.createUser(form.value.username, form.value.password);
         this.messageService.postWelcomeMessage(form.value.username);
-        this.router.navigateByUrl("login");
+        //log user in and go to inbox
+        this.loginService.login(form.value.username, form.value.password).subscribe(response => {
+          if (response) {
+            this.loginService.setUsername(form.value.username);
+            this.router.navigateByUrl("inbox");
+          }
+        })
       }
     });
-  }
-
-  ngOnInit() {
   }
 
 }

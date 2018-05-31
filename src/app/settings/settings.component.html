@@ -1,11 +1,21 @@
-<div>
-  <h1>Account Settings for
+<div class="settings">
+  <!-- <h1 class='ui centered header'>Account Settings for
     <span [innerHTML]="user"></span>
-  </h1>
-  <button class="ui button" (click)="openMenu('pp')">Privacy Policy</button>
-  <button class="ui button" (click)="openMenu('cp')">Change Password</button>
-  <button class="negative ui button" (click)="openMenu('du')">Delete Account</button>
-    <!-- Change Password -->
+  </h1> -->
+  <div class="menuBox">
+    <div class='ui compact menu'>
+      <a class='item' (click)="openMenu('pp')" [ngClass]="privacy ? 'active' : 'null'">
+        Privacy Policy
+      </a>
+      <a class='item' (click)="openMenu('cp')" [ngClass]="changingPassword ? 'active' : 'null'">
+        Change Password
+      </a>
+      <a class='item delete' (click)="openMenu('du')" [ngClass]="deletingUser ? 'active' : 'null'">
+        Delete Account
+      </a>
+    </div>
+  </div>
+  <!-- Change Password -->
   <div class="ui message" *ngIf='changingPassword'>
     <div class="header">
       Enter current password and desired new password
@@ -14,7 +24,7 @@
     <form class="ui form" (ngSubmit)="checkPassword(cpForm, this.changePassword)" #cpForm="ngForm">
       <div class="field">
         <label>Current Password</label>
-        <input type="password" name="password" [ngModel]="form.password" required>
+        <input type="password" name="password" (focus)='badPassword = false' [ngModel]="form.password" required>
         <div class="ui negative message" *ngIf='badPassword'>
           <div class="header">
             Password incorrect
@@ -42,7 +52,7 @@
     <form class="ui form" (ngSubmit)="checkPassword(duForm, deleteUser)" #duForm="ngForm">
       <div class="field">
         <label>Enter password to confirm</label>
-        <input type="password" name="password" [ngModel]="form.password" required>
+        <input type="password" name="password" (focus)='badPassword = false' [ngModel]="form.password" required>
         <div class="ui negative message" *ngIf='badPassword'>
           <div class="header">
             Password incorrect
@@ -53,7 +63,6 @@
       <button class="ui button" type="submit" (click)="this.deletingUser = false">Cancel</button>
     </form>
   </div>
-</div>
 <!-- Privacy policy -->
 <div class="ui message" *ngIf='privacy'>
   <div class="header">
@@ -66,4 +75,6 @@
   <div class="header">
     Success!
   </div>
+</div>
+
 </div>

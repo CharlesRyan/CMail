@@ -39,8 +39,8 @@ export class MessageService {
           sender: 'CCR',
           receiver: un,
           sent: date.toString(),
-          title: 'Welcome',
-          body: `Welcome, ${un}, to my messaging app`
+          subject: 'Welcome',
+          message: `Welcome, ${un}, to my messaging app`
         }
       },
       sent: {
@@ -48,8 +48,8 @@ export class MessageService {
           sender: 'CCR',
           receiver: un,
           sent: date.toString(),
-          title: 'Welcome',
-          body: `Welcome, ${un}, to my messaging app`
+          subject: 'Welcome',
+          message: `Welcome, ${un}, to my messaging app`
         }
       }
     };

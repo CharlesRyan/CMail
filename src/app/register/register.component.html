@@ -3,11 +3,11 @@
   <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
     <div class="field">
       <label for="username">Username</label>
-      <input name="username" type="text" placeholder="Username" [ngModel]="form.username" required>
+      <input name="username" type="text" placeholder="Username" (focus)='unExists = false' [ngModel]="form.username" maxLength="16" required>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" required>
+      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" maxLength="16" required>
     </div>
 
     <div class="ui negative message" *ngIf='unExists'>

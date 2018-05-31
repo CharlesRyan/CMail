@@ -8,15 +8,14 @@ import { LoginService } from "../login.service";
 })
 export class NavigationComponent implements OnInit {
 
+  public user;
+
   constructor(
     private loginService: LoginService
   ) { }
 
   ngOnInit() {
-  }
-
-  toggleDirectory() {
-    this.loginService.getAllUsers().subscribe()
+    this.user = this.loginService.getUsername();
   }
 
   logout() {

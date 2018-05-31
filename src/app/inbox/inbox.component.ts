@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+
 import { MessageService } from "../message.service"
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-inbox',
@@ -9,18 +12,20 @@ import { MessageService } from "../message.service"
 export class InboxComponent implements OnInit {
 
   public messages = [];
-  public user:string;
+  public user;
 
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loginService: LoginService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.getInboxMessages();
   }
 
-  getInboxMessages() {
-    this.user = localStorage.getItem('user');
+  getInboxMessages(): void {
+    this.user = this.loginService.getUsername();
     this.messageService.getAllMessages(`messages/${this.user}/inbox`)
       .subscribe(
         data => {
@@ -30,10 +35,15 @@ export class InboxComponent implements OnInit {
       );
   }
 
-  delete(id) {
+  reply(target) {
+    localStorage.setItem('target', target);
+    this.router.navigateByUrl("compose");
+  }
+
+  delete(id: string): void {
     this.messageService.deleteMessageById(`messages/${this.user}/inbox/${id}`)
       .subscribe(
-        data => { 
+        data => {
           // success, update local messages
           this.getInboxMessages();
         },

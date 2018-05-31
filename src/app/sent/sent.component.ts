@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from "../message.service"
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-sent',
@@ -9,10 +10,11 @@ import { MessageService } from "../message.service"
 export class SentComponent implements OnInit {
 
   public messages = [];
-  public user:string;
+  public user;
 
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -20,11 +22,11 @@ export class SentComponent implements OnInit {
   }
 
   getSentMessages() {
-    this.user = localStorage.getItem('user');
+    this.user = this.loginService.getUsername();
     this.messageService.getAllMessages(`messages/${this.user}/sent`)
       .subscribe(
         data => {
-            this.messages = data.slice().reverse(); // keep the most recent in front
+            this.messages = data.slice().reverse(); // keep the most recent on top
           },
         err => console.log(err)
       );
@@ -33,8 +35,8 @@ export class SentComponent implements OnInit {
   delete(id) {
     this.messageService.deleteMessageById(`messages/${this.user}/sent/${id}`)
       .subscribe(
-        data => { // success, clear local messages and make another request
-          // this.messages = [];
+        data => { 
+          // success, load updated messages
           this.getSentMessages();
         },
         err => console.log(err)

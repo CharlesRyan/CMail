@@ -1,0 +1,17 @@
+.menuBox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.menu {
+    margin: 1rem 0 !important;
+}
+.delete {
+    color: red !important;
+}
+.settings {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}

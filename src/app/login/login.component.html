@@ -3,11 +3,11 @@
   <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
     <div class="field">
       <label for="username">Username</label>
-      <input name="username" type="text" placeholder="Username" [ngModel]="form.username" required>
+      <input name="username" type="text" placeholder="Username" (focus)='failedSignIn = false' [ngModel]="form.username" required>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" required>
+      <input name="password" type="password" placeholder="Password" (focus)='failedSignIn = false' [ngModel]="form.password" required>
     </div>
 
     <div class="ui negative message" *ngIf='failedSignIn'>

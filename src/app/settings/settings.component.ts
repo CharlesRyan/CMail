@@ -23,7 +23,7 @@ export class SettingsComponent implements OnInit {
 
   public form = {};
 
-  public user: string;
+  public user;
   public menuOpen: boolean = false;
   public currentMenu: string;
   public privacy: boolean = false;
@@ -39,13 +39,13 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user = localStorage.getItem('user');
+    this.user = this.loginService.getUsername();
   }
 
-  openMenu(action) {
+  openMenu(action):void {
     if (this.menuOpen === true && this.currentMenu === action) {
       this.closeMenu();
-      return; // don't open menu if same button pressed twice
+      return; // don't execute open menu if same button pressed twice
     } else if (this.menuOpen === true) {
       this.closeMenu();
     }
@@ -67,7 +67,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  closeMenu() {
+  closeMenu():void {
     this.privacy = false;
     this.success = false;
     this.deletingUser = false;
@@ -77,7 +77,7 @@ export class SettingsComponent implements OnInit {
     this.badPassword = false;
   }
 
-  checkPassword(form: NgForm, cb) { // calls cb if password matches
+  checkPassword(form: NgForm, cb:FunctionStringCallback):void { // calls cb if password matches
     this.loginService.login(this.user, form.value.password).subscribe(response => {
       if (response) {
         cb.call(this, form);
@@ -87,7 +87,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  changePassword(form: NgForm) {
+  changePassword(form: NgForm):void {
     if (form.value.newPassword1 === form.value.newPassword2) {
       this.loginService.createUser(this.user, form.value.newPassword1);
       this.openMenu('su');
@@ -96,7 +96,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  deleteUser(form: NgForm) {
+  deleteUser(form: NgForm):void {
     this.loginService.deleteUser(this.user); // user data
     this.messageService.deleteUser(this.user); // messages
     this.loginService.logout();

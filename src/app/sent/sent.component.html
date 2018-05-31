@@ -1,11 +1,11 @@
-<h1 class="ui centered header">Sent</h1>
-<table class="ui celled table">
+<!-- <h1 class="ui centered header">Sent</h1> -->
+<table class="ui fluid celled table">
   <thead>
     <tr>
-      <th>Recipient</th>
-      <th>Time Sent</th>
-      <th>Subject</th>
-      <th>Message</th>
+      <th class="center aligned">Recipient</th>
+      <th class="center aligned">Time Sent</th>
+      <th class="center aligned">Subject</th>
+      <th class="center aligned">Message</th>
       <th></th>
     </tr>
   </thead>
@@ -13,10 +13,10 @@
     <tr *ngFor="let message of messages">
       <td>{{message.receiver}}</td>
       <td>{{message.sent | date}}</td>
-      <td>{{message.title}}</td>
-      <td>{{message.body}}</td>
+      <td>{{message.subject}}</td>
+      <td>{{message.message}}</td>
       <td>
-        <button class="negative ui button" (click)="delete(message.id)">Delete</button>
+        <i class="trash icon" (click)="delete(message.id)"></i>
       </td>
     </tr>
   </tbody>

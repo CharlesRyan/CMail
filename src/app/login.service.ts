@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireAuth } from "angularfire2/auth";
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from "firebase/app";
+import * as shajs from 'sha.js';
 
 import { ApplicationSettingsService } from "./application-settings.service";
 
@@ -16,31 +17,26 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class LoginService {
 
-  private username;
   private users: Observable<any[]>;
-  private _loggedInUser: boolean;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private db: AngularFireDatabase,
     private applicationSettings: ApplicationSettingsService
-  ) {
-
-    this._loggedInUser = false;
-
-  }
-
-  getUser() {
-    return this.username;
-  }
+  ) { }
 
   getAllUsers(): Observable<any> {
     return this.http.get(this.applicationSettings.getFirebaseRestUrl("users"));
   }
 
-  getLoggedInUser() {
-    return localStorage.getItem('user');
+  getUsername() {// returns username if found, false if not
+    let user = localStorage.getItem('user');
+    return user !== null ? user : false;
+  }
+
+  setUsername(un: string) {
+    localStorage.setItem('user', un);
   }
 
   checkForUsername(un) {
@@ -56,10 +52,16 @@ export class LoginService {
     return userList;
   }
 
+  hashPassword(pw){
+    let hash = shajs('sha256').update(pw).digest('hex');
+    return hash;
+  }
+
   createUser(un, pw) {
     // add username to user list and password as attribute 'pw' under username
+    let hash = this.hashPassword(pw);
     let passRef = this.db.list(`users`);
-    passRef.update(un, { 'pw': pw });
+    passRef.update(un, { 'pw': hash });
   }
 
   deleteUser(user) {
@@ -68,15 +70,15 @@ export class LoginService {
   }
 
   logout() {
-    this._loggedInUser = false;
     localStorage.removeItem('user');
   }
 
   login(un, pw) {
+    let hash = this.hashPassword(pw);
     let userList = this.getAllUsers()
       .map(users => {
         for (let user in users) {
-          if ((user === un) && (users[user]['pw'] === pw)) {
+          if ((user === un) && (users[user]['pw'] === hash)) {
             return true;
           };
         }

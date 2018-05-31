@@ -1,3 +1,6 @@
 .header {
     margin: 2rem 0;
 }
+i {
+    cursor: pointer;
+}
