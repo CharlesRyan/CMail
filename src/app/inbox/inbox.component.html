@@ -1,12 +1,12 @@
 <!-- <h1 class="ui centered header">Inbox</h1> -->
-<table class="ui celled fluid table">
+<table class="ui celled fluid table unstackable">
   <thead>
     <tr>
-      <th>Sender</th>
-      <th>Time Sent</th>
-      <th>Subject</th>
-      <th>Message</th>
-      <th></th>
+        <th class='three wide column center aligned'>Sender</th>
+        <th class='two wide column center aligned'>Time Sent</th>
+        <th class='four wide column center aligned'>Subject</th>
+        <th class='six wide column center aligned'>Message</th>
+        <th class='one wide column center aligned'></th>
     </tr>
   </thead>
   <tbody>
@@ -16,7 +16,7 @@
       <td>{{message.subject}}</td>
       <td>{{message.message}}</td>
       <td>
-        <i class="reply icon" (click)="reply(message.sender)"></i>
+        <i class="reply icon" (click)="reply(message.sender, message.subject)"></i>
         <i class="trash icon" (click)="delete(message.id)"></i>
       </td>
     </tr>

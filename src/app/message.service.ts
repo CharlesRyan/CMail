@@ -40,7 +40,7 @@ export class MessageService {
           receiver: un,
           sent: date.toString(),
           subject: 'Welcome',
-          message: `Welcome, ${un}, to my messaging app`
+          message: `Welcome, ${un}, to CMail`
         }
       },
       sent: {
@@ -49,7 +49,7 @@ export class MessageService {
           receiver: un,
           sent: date.toString(),
           subject: 'Welcome',
-          message: `Welcome, ${un}, to my messaging app`
+          message: `Welcome, ${un}, to CMail`
         }
       }
     };

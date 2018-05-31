@@ -15,10 +15,6 @@ export class ComposeComponent implements OnInit {
   form: FormGroup;
   public unExists: boolean = true;
   public users = [];
-  public dirUser;
-  public replyReceiver: string = '';
-  public replySubject: string = '';
-
 
   constructor(
     private loginService: LoginService,
@@ -29,8 +25,6 @@ export class ComposeComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      // receiver: [this.replyReceiver, Validators.required],
-      // subject: [this.replySubject, Validators.required],
       receiver: ['', Validators.required],
       subject: ['', Validators.required],
       message: ['', Validators.required]
@@ -47,9 +41,7 @@ export class ComposeComponent implements OnInit {
   }
 
 
-  onFormSubmit({value, valid}): void {
-    console.log(value);
-    
+  onFormSubmit({ value, valid }): void {
     let date = new Date();
     let message = { // pull values from the form
       subject: value.subject,
@@ -72,19 +64,21 @@ export class ComposeComponent implements OnInit {
   }
 
   fillInUser(event): void { // populates receiver field with username clicked in directory
-    // this.dirUser = event.target.innerText;
-    (<HTMLInputElement>document.getElementById('receiver')).value = event.target.innerText;
-    console.log(this.dirUser);
+    this.form.patchValue({
+      receiver: event.target.innerText
+    })
   }
 
   checkReplyRedirect(): void {
     let receiver = localStorage.getItem('target');
     let subject = localStorage.getItem('subject');
-    console.log(receiver);
 
     if (receiver) {
-      this.replyReceiver = receiver;
-      this.replySubject = `RE: ${subject}`;
+      this.form.setValue({
+        receiver: receiver,
+        subject: `RE: ${subject}`,
+        message: ''
+      })
     }
     localStorage.removeItem('target');
     localStorage.removeItem('subject');

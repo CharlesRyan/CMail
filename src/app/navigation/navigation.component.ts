@@ -15,7 +15,8 @@ export class NavigationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user = this.loginService.getUsername();
+    let check = this.loginService.getUsername();
+    this.user = check === false ? 'Please Log In' : `Hello, ${check}`;
   }
 
   logout() {

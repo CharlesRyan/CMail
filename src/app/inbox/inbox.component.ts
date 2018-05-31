@@ -35,8 +35,9 @@ export class InboxComponent implements OnInit {
       );
   }
 
-  reply(target) {
+  reply(target, subject) {
     localStorage.setItem('target', target);
+    localStorage.setItem('subject', subject);
     this.router.navigateByUrl("compose");
   }
 

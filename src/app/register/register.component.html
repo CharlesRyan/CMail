@@ -1,23 +1,27 @@
-<div class="ui grid container centered">
-  <h1>Register</h1>
-  <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
-    <div class="field">
-      <label for="username">Username</label>
-      <input name="username" type="text" placeholder="Username" (focus)='unExists = false' [ngModel]="form.username" maxLength="16" required>
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input name="password" type="password" placeholder="Password" [ngModel]="form.password" maxLength="16" required>
-    </div>
-
-    <div class="ui negative message" *ngIf='unExists'>
-      <div class="header">
-        Username Exists
+<div class="ui one column stackable center aligned page grid">
+  <div class="column five wide">
+    <h1>Register</h1>
+    <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
+      <div class="field">
+        <!-- <label for="username">Username</label> -->
+        <input name="username" type="text" placeholder="Username" (focus)='unExists = false' [ngModel]="form.username" maxLength="16"
+          required>
       </div>
-      <p class="ui">Be More Unique</p>
-    </div>
+      <div class="field">
+        <!-- <label for="password">Password</label> -->
+        <input name="password" type="password" placeholder="Password" [ngModel]="form.password" maxLength="16" required>
+      </div>
 
-    <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Create</button>
-  </form>
-  <a routerLink="../login" routerLinkActive="active">Back to Login</a>
+      <div class="ui negative message" *ngIf='unExists'>
+        <div class="header">
+          Username Exists
+        </div>
+        <p class="ui">Be More Unique</p>
+      </div>
+
+      <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Create</button>
+    </form>
+    <br>
+    <a routerLink="../login" routerLinkActive="active">Back to Login</a>
+  </div>
 </div>

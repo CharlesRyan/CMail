@@ -1,27 +1,28 @@
-<div class="ui grid container centered">
-  <h1>Login</h1>
-  <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
-    <div class="field">
-      <label for="username">Username</label>
-      <input name="username" type="text" placeholder="Username" (focus)='failedSignIn = false' [ngModel]="form.username" required>
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input name="password" type="password" placeholder="Password" (focus)='failedSignIn = false' [ngModel]="form.password" required>
-    </div>
-
-    <div class="ui negative message" *ngIf='failedSignIn'>
-      <div class="header">
-        Sign In Failed
+<div class="ui one column stackable center aligned page grid">
+  <div class="column five wide">
+    <h1>Login</h1>
+    <form class="ui form" (ngSubmit)="onFormSubmit(myForm)" #myForm="ngForm">
+      <div class="field">
+        <!-- <label for="username">Username</label> -->
+        <input name="username" type="text" placeholder="Username" (focus)='failedSignIn = false' [ngModel]="form.username" required>
       </div>
-      <p class="ui">Username/Password Incorrect</p>
-      
+      <div class="field">
+        <!-- <label for="password">Password</label> -->
+        <input name="password" type="password" placeholder="Password" (focus)='failedSignIn = false' [ngModel]="form.password" required>
+      </div>
+
+      <div class="ui negative message" *ngIf='failedSignIn'>
+        <div class="header">
+          Sign In Failed
+        </div>
+        <p class="ui">Username/Password Incorrect</p>
+
+      </div>
+      <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Submit</button>
+    </form>
+    <div>
+      <br>
+        <a routerLink="../register" routerLinkActive="active">Create Account</a>
     </div>
-    <button type="submit" class="ui submit button" [disabled]="!myForm.valid">Submit</button>
-  </form>
-  <div>
-    <p>New user? Want another account to converse with yourself?
-      <a routerLink="../register" routerLinkActive="active">Register Here</a>
-    </p>
   </div>
 </div>
