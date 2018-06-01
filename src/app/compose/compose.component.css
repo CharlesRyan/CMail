@@ -1,6 +1,11 @@
 .userDir {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+    box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     font-weight: 700;
     margin: 0 0 .28571429rem 0;
     color: rgba(0,0,0,.87);
